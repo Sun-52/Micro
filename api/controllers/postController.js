@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const date = require("date-and-time");
 const post = mongoose.model("post");
 const user = mongoose.model("user");
 const comment = mongoose.model("comment");
@@ -7,6 +8,7 @@ const comment = mongoose.model("comment");
 exports.publish = (req, res) => {
   const newPost = new post(req.body);
   newPost.category = req.body.category.split(",");
+  newPost.date = date.format(new Date(), "YYYY/MM/DD");
   console.log(newPost);
   console.log(req.body);
   //newPost.update({ date: Date() });
@@ -42,6 +44,7 @@ exports.view_post = (req, res) => {
 
 exports.post_comment = (req, res) => {
   const newComment = new comment(req.body);
+  newComment.date = date.format(new Date(), "YYYY/MM/DD");
   newComment.save((err, comment) => {
     if (err) res.send(err);
     post.findByIdAndUpdate(

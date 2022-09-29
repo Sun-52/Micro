@@ -7,7 +7,7 @@ const commentSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "user",
   },
-  time: {
+  date: {
     type: String,
   },
   content: {

@@ -1,8 +1,12 @@
+const Joi = require("joi");
 const mongoose = require("mongoose");
 const user = mongoose.model("user");
 //function/controller
 
 exports.sign_in = async (req, res) => {
+  const schema = {
+    name: Joi.string().min(3).required(),
+  };
   let userInfoResponse = await fetch(
     "https://www.googleapis.com/userinfo/v2/me",
     {
@@ -46,7 +50,7 @@ exports.get_profile = async (req, res) => {
     });
 };
 
-user.change_profile = (req, res) => {
+exports.change_profile = (req, res) => {
   user.findOneAndUpdate(
     req.params.id,
     { picture: req.body.picture },

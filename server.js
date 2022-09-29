@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
+const Joi = require("joi");
 global.user = require("./api/models/userModel");
 global.post = require("./api/models/postModel");
 global.comment = require("./api/models/commentModel");
