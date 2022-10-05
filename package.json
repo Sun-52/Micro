@@ -37,6 +37,7 @@
     "passport": "^0.6.0",
     "passport-google-oauth": "^2.0.0",
     "passport-oauth2": "^1.6.1",
+    "phantomjs": "^2.1.7",
     "pusher": "^5.1.1-beta",
     "sharp": "^0.31.1",
     "url-search-params": "^1.1.0"
