@@ -1,4 +1,6 @@
 const Joi = require("joi");
+// const fs = require("fs");
+// const sharp = require("sharp");
 const mongoose = require("mongoose");
 const user = mongoose.model("user");
 //function/controller
@@ -40,9 +42,34 @@ exports.sign_in = async (req, res) => {
   });
 };
 
+// exports.add_profie_image = async (req, res) => {
+//   const buffer = Buffer.from(req.body.profile, "base64");
+//   fs.writeFileSync(`public/${Date.now()}.jpg`, buffer);
+
+//   const folder = "profile";
+//   const fileName = `${folder}/${Date.now()}`;
+//   const fileUpload = bucket.file(fileName);
+//   const blobStream = fileUpload.createWriteStream({
+//     metadata: {
+//       contentType: ".jpg",
+//     },
+//   });
+
+//   //const image_url = "https://project-micro.herokuapp.com/profile.jpg";
+//   // const res_img = await fetch(image_url);
+//   // const blob = await res_img.buffer();
+//   // const uploadedImage = await s3
+//   //   .upload({
+//   //     Bucket: process.env.AWS_S3_BUCKET_NAME,
+//   //     Key: req.files[0].originalFilename,
+//   //     Body: blob,
+//   //   })
+//   //   .promise();
+//};
+
 exports.get_profile = async (req, res) => {
   user
-    .findById(req.params.id)
+    .findById(req.params.user_id)
     .populate("posts")
     .exec(function (err, user) {
       if (err) res.send(err);
@@ -52,7 +79,7 @@ exports.get_profile = async (req, res) => {
 
 exports.change_profile = (req, res) => {
   user.findOneAndUpdate(
-    req.params.id,
+    req.params.user_id,
     { picture: req.body.picture },
     (err, user) => {
       if (err) res.send(err);
@@ -61,9 +88,42 @@ exports.change_profile = (req, res) => {
   );
 };
 
+exports.add_favourite = async (req, res) => {
+  const current_user = await user.findById(req.params.user_id);
+  if (current_user.favourite.includes(req.params.post_id) == false) {
+    user.findByIdAndUpdate(
+      req.params.user_id,
+      {
+        $push: {
+          favourite: req.params.post_id,
+        },
+      },
+      { new: true },
+      (err, user) => {
+        if (err) res.send(err);
+        res.send(user);
+      }
+    );
+  } else {
+    user.findByIdAndUpdate(
+      req.params.user_id,
+      {
+        $pull: {
+          favourite: req.params.post_id,
+        },
+      },
+      { new: true },
+      (err, user) => {
+        if (err) res.send(err);
+        res.send(user);
+      }
+    );
+  }
+};
+
 exports.get_favourite = (req, res) => {
   user
-    .findById(req.params.id)
+    .findById(req.params.user_id)
     .populate("favourite")
     .exec(function (err, user) {
       if (err) res.send(err);

@@ -34,7 +34,7 @@ exports.publish = (req, res) => {
 
 exports.view_post = (req, res) => {
   post
-    .findById({ _id: req.params.id })
+    .findById({ _id: req.params.post_id })
     .populate("comments")
     .exec(function (err, post) {
       if (err) res.send(err);
@@ -48,7 +48,7 @@ exports.post_comment = (req, res) => {
   newComment.save((err, comment) => {
     if (err) res.send(err);
     post.findByIdAndUpdate(
-      req.params.id,
+      req.params.post_id,
       {
         $addToSet: {
           comments: newComment._id,
@@ -66,10 +66,10 @@ exports.post_comment = (req, res) => {
 };
 
 exports.like = async (req, res) => {
-  const current_post = await post.findById(req.params.id);
+  const current_post = await post.findById(req.params.post_id);
   if (current_post.liked_user.includes(req.params.user_id) == true) {
     post.findByIdAndUpdate(
-      req.params.id,
+      req.params.post_id,
       {
         $pull: {
           liked_user: req.params.user_id,
@@ -84,7 +84,7 @@ exports.like = async (req, res) => {
     );
   } else if (current_post.liked_user.includes(req.params.user_id) == false) {
     post.findByIdAndUpdate(
-      req.params.id,
+      req.params.post_id,
       {
         $push: {
           liked_user: req.params.user_id,
@@ -101,11 +101,11 @@ exports.like = async (req, res) => {
 };
 
 // exports.dislike = async (req, res) => {
-//   const current_post = await post.findById(req.params.id);
+//   const current_post = await post.findById(req.params.post_id);
 //   dislike_process = () => {
 //     if (current_post.disliked_user.includes(req.params.user_id) == true) {
 //       post.findByIdAndUpdate(
-//         req.params.id,
+//         req.params.post_id,
 //         {
 //           $pull: {
 //             disliked_user: req.params.user_id,
@@ -122,7 +122,7 @@ exports.like = async (req, res) => {
 //       current_post.disliked_user.includes(req.params.user_id) == false
 //     ) {
 //       post.findByIdAndUpdate(
-//         req.params.id,
+//         req.params.post_id,
 //         {
 //           $push: {
 //             disliked_user: req.params.user_id,
@@ -139,7 +139,7 @@ exports.like = async (req, res) => {
 //   };
 //   if (current_post.liked_user.includes(req.params.user_id) == true) {
 //     post.findByIdAndUpdate(
-//       req.params.id,
+//       req.params.post_id,
 //       {
 //         $pull: {
 //           liked_user: req.params.user_id,
@@ -158,38 +158,6 @@ exports.like = async (req, res) => {
 //   }
 // };
 
-exports.add_favourite = async (req, res) => {
-  const current_user = await user.findById(req.params.user_id);
-  if (current_user.favourite.includes(req.params.id) == false) {
-    user.findByIdAndUpdate(
-      req.params.user_id,
-      {
-        $push: {
-          favourite: req.params.id,
-        },
-      },
-      { new: true },
-      (err, user) => {
-        if (err) res.send(err);
-        res.send(user);
-      }
-    );
-  } else {
-    user.findByIdAndUpdate(
-      req.params.user_id,
-      {
-        $pull: {
-          favourite: req.params.id,
-        },
-      },
-      { new: true },
-      (err, user) => {
-        if (err) res.send(err);
-        res.send(user);
-      }
-    );
-  }
-};
 exports.get_all_post = (req, res) => {
   post.find({}, (err, post) => {
     if (err) res.send(err);
@@ -197,6 +165,12 @@ exports.get_all_post = (req, res) => {
   });
 };
 
+exports.get_post_by_category = (req, res) => {
+  post.find({ category: req.query.category }, (err, post) => {
+    if (err) res.send(err);
+    res.json(post);
+  });
+};
 // exports.filter_post = (req, res) => {
 //   console.log(req.query.category.split(","));
 //   post.find(

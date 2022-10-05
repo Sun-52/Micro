@@ -9,11 +9,9 @@ const userSchema = new Schema({
   email: {
     type: String,
   },
-  picture: [
-    {
-      type: Number,
-    },
-  ],
+  profile: {
+    type: String,
+  },
   googleId: {
     type: Schema.Types.ObjectId,
   },
