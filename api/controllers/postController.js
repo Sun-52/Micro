@@ -5,32 +5,30 @@ const user = mongoose.model("user");
 const comment = mongoose.model("comment");
 //function/controller
 
-exports.publish = (req, res) => {
-  const newPost = new post(req.body);
-  newPost.category = req.body.category.split(",");
-  newPost.date = date.format(new Date(), "YYYY/MM/DD");
-  console.log(newPost);
-  console.log(req.body);
-  //newPost.update({ date: Date() });
-  newPost.save((err, post) => {
-    if (err) res.send(err);
-    user.findByIdAndUpdate(
-      newPost.user,
-      {
-        $addToSet: {
-          posts: newPost._id,
-        },
-      },
-      { new: true },
-      (err, user) => {
-        if (err) res.send(err);
-        //res.json(user);
-        console.log("post added to user");
-      }
-    );
-    res.json(post);
-  });
-};
+// exports.publish = (req, res) => {
+//   const newPost = new post(req.body);
+//   newPost.category = req.body.category.split(",");
+//   newPost.date = date.format(new Date(), "YYYY/MM/DD");
+//   console.log(newPost);
+//   console.log(req.body);
+//   newPost.save((err, post) => {
+//     if (err) res.send(err);
+//     user.findByIdAndUpdate(
+//       newPost.user,
+//       {
+//         $addToSet: {
+//           posts: newPost._id,
+//         },
+//       },
+//       { new: true },
+//       (err, user) => {
+//         if (err) res.send(err);
+//         console.log("post added to user");
+//       }
+//     );
+//     res.json(post);
+//   });
+// };
 
 exports.view_post = (req, res) => {
   post

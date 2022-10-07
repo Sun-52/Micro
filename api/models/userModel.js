@@ -12,6 +12,9 @@ const userSchema = new Schema({
   profile: {
     type: String,
   },
+  profile_image: {
+    type: String,
+  },
   googleId: {
     type: Schema.Types.ObjectId,
   },

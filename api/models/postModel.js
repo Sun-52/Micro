@@ -7,11 +7,9 @@ const postSchema = new Schema({
     type: String,
     required: "title cannot be blank",
   },
-  image: [
-    {
-      type: Number,
-    },
-  ],
+  image: {
+    type: String,
+  },
   content: {
     type: String,
     required: "content cannot be blank",
