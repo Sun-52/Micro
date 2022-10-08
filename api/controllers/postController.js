@@ -30,14 +30,18 @@ const comment = mongoose.model("comment");
 //   });
 // };
 
-exports.view_post = (req, res) => {
-  post
-    .findById({ _id: req.params.post_id })
+exports.view_post = async (req, res) => {
+  await post
+    .findByIdAndUpdate({ _id: req.params.post_id }, { $inc: { view: 1 } })
     .populate("comments")
     .exec(function (err, post) {
       if (err) res.send(err);
-      res.json(post);
+      console.log("user added");
     });
+  post.findById({ _id: req.params.post_id }, (err, post) => {
+    if (err) res.send(err);
+    res.json(post);
+  });
 };
 
 exports.post_comment = (req, res) => {

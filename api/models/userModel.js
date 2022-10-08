@@ -24,6 +24,9 @@ const userSchema = new Schema({
       ref: "post",
     },
   ],
+  posts_count: {
+    type: Number,
+  },
   favourite: [
     {
       type: Schema.Types.ObjectId,

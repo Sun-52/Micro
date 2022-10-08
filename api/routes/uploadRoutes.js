@@ -13,6 +13,7 @@ const {
   ref,
   uploadBytes,
   getDownloadURL,
+  connectStorageEmulator,
 } = require("firebase/storage");
 
 const firebaseConfig = {
@@ -30,20 +31,21 @@ const storageRef = ref(storage, "some-child");
 
 module.exports = (app) => {
   app.post("/upload/:user_id", upload.single("file"), async (req, res) => {
-    var file = req.file;
+    var file = await req.file;
+    console.log(file);
     var filename = file.originalname;
     var imageRef = ref(storage, filename);
     var metatype = { contentType: file.mimetype, name: file.originalname };
     await uploadBytes(imageRef, file.buffer, metatype).then((snapshot) => {
       console.log("image uploaded");
     });
-    getDownloadURL(ref(storage, filename)).then(async (url) => {
+    await getDownloadURL(ref(storage, filename)).then((url) => {
       user.findOneAndUpdate(
         { _id: req.params.user_id },
         { profile_image: url },
-        async (err, user) => {
+        (err, user) => {
           if (err) res.send(err);
-          res.send(url);
+          res.json(user);
         }
       );
     });
@@ -52,7 +54,8 @@ module.exports = (app) => {
     const newPost = new post(req.body);
     newPost.category = req.body.category.split(",");
     newPost.date = date.format(new Date(), "YYYY/MM/DD");
-    var file = req.file;
+    var file = await req.file;
+    console.log(file);
     var filename = file.originalname;
     var imageRef = ref(storage, filename);
     var metatype = { contentType: file.mimetype, name: file.originalname };
@@ -64,7 +67,7 @@ module.exports = (app) => {
       console.log(newPost);
       newPost.image = url;
     });
-    newPost.save((err, post) => {
+    newPost.save(async (err, post) => {
       if (err) res.send(err);
       user.findByIdAndUpdate(
         newPost.user,
@@ -75,8 +78,16 @@ module.exports = (app) => {
         },
         { new: true },
         (err, user) => {
+          if (err) console.log(err);
+          console.log("Post added to user");
+        }
+      );
+      user.findByIdAndUpdate(
+        newPost.user,
+        { $inc: { posts_count: 1 } },
+        (err, user) => {
           if (err) res.send(err);
-          console.log("post added to user");
+          console.log("Post count updated");
         }
       );
       res.json(post);
