@@ -36,6 +36,8 @@ exports.view_post = async (req, res) => {
 
   viewing_post.view = view + 1;
   await viewing_post.save();
+  console.log("view count updated");
+  console.log(viewing_post);
   post
     .findById(req.params.post_id)
     .populate("comments")
