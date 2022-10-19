@@ -6,6 +6,7 @@ const user = mongoose.model("user");
 //function/controller
 
 exports.sign_in = async (req, res) => {
+  let accessToken = req.params.token
   const schema = {
     name: Joi.string().min(3).required(),
   };
