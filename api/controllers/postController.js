@@ -31,17 +31,18 @@ const comment = mongoose.model("comment");
 // };
 
 exports.view_post = async (req, res) => {
-  await post
-    .findByIdAndUpdate({ _id: req.params.post_id }, { $inc: { view: 1 } })
+  const viewing_post = await post.findById(req.params.post_id);
+  const view = viewing_post.view;
+
+  viewing_post.view = view + 1;
+  await viewing_post.save();
+  post
+    .findById(req.params.post_id)
     .populate("comments")
     .exec(function (err, post) {
       if (err) res.send(err);
-      console.log("user added");
+      res.json(post);
     });
-  post.findById({ _id: req.params.post_id }, (err, post) => {
-    if (err) res.send(err);
-    res.json(post);
-  });
 };
 
 exports.post_comment = (req, res) => {
