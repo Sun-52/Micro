@@ -6,7 +6,7 @@ const user = mongoose.model("user");
 //function/controller
 
 exports.sign_in = async (req, res) => {
-  let accessToken = req.params.token
+  let accessToken = req.params.token;
   const schema = {
     name: Joi.string().min(3).required(),
   };
@@ -38,7 +38,7 @@ exports.sign_in = async (req, res) => {
         res.json(user);
       });
     } else {
-      res.send(_userInfo);
+      res.json(user);
     }
   });
 };
