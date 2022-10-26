@@ -47,7 +47,7 @@ exports.sign_up = (req, res) => {
   const newUser = new user(req.body);
   newUser.save((err, user) => {
     if (err) res.send(err);
-    res.sjon(user);
+    res.json(user);
   });
 };
 
