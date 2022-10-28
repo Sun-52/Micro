@@ -1,9 +1,8 @@
-const { application } = require("express");
 const taskBuilder = require("../controllers/userController.js");
 
 module.exports = (app) => {
   //app.route("/user/:token").post(taskBuilder.sign_in); //finished
-  application.route("/user").post(taskBuilder.sign_up);
+  app.route("/user").post(taskBuilder.sign_up);
   app.route("/user/:user_id").get(taskBuilder.sign_in);
   app
     .route("/user/profile/:user_id")
