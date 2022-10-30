@@ -116,7 +116,7 @@ exports.add_favourite = async (req, res) => {
       { new: true },
       (err, user) => {
         if (err) res.send(err);
-        res.send(user);
+        res.json(user);
       }
     );
   } else {
@@ -130,7 +130,7 @@ exports.add_favourite = async (req, res) => {
       { new: true },
       (err, user) => {
         if (err) res.send(err);
-        res.send(user);
+        res.json(user);
       }
     );
   }
