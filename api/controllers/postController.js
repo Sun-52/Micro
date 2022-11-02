@@ -62,11 +62,11 @@ exports.post_comment = (req, res) => {
       { new: true },
       (err, post) => {
         if (err) res.send(err);
-        //res.json(post);
+        res.json(post);
         console.log("comment added");
       }
     );
-    res.json(comment);
+    //res.json(comment);
   });
 };
 
