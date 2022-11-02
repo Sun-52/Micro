@@ -30,7 +30,8 @@ const storage = getStorage(app);
 const storageRef = ref(storage, "some-child");
 
 module.exports = (app) => {
-  app.post("/upload/:user_id", upload.single("file"), async (req, res) => {
+  app.post("/upload", upload.single("file"), async (req, res) => {
+    const newUser = new user(req.body);
     var file = await req.file;
     console.log(file);
     var filename = file.originalname;
@@ -40,14 +41,19 @@ module.exports = (app) => {
       console.log("image uploaded");
     });
     await getDownloadURL(ref(storage, filename)).then((url) => {
-      user.findOneAndUpdate(
-        { _id: req.params.user_id },
-        { profile_image: url },
-        (err, user) => {
-          if (err) res.send(err);
-          res.json(user);
-        }
-      );
+      // user.findOneAndUpdate(
+      //   { _id: req.params.user_id },
+      //   { profile_image: url },
+      //   (err, user) => {
+      //     if (err) res.send(err);
+      //     res.json(user);
+      //   }
+      // );
+      newUser.profile_image = url;
+    });
+    newUser.save((err, user) => {
+      if (err) res.send(err);
+      res.json(user);
     });
   });
   app.post("/post", upload.single("file"), async (req, res) => {
