@@ -106,33 +106,37 @@ exports.change_profile = (req, res) => {
 exports.add_favourite = async (req, res) => {
   const current_user = await user.findById(req.params.user_id);
   if (current_user.favourite.includes(req.params.post_id) == false) {
-    user.findByIdAndUpdate(
-      req.params.user_id,
-      {
-        $push: {
-          favourite: req.params.post_id,
+    user
+      .findByIdAndUpdate(
+        req.params.user_id,
+        {
+          $push: {
+            favourite: req.params.post_id,
+          },
         },
-      },
-      { new: true },
-      (err, user) => {
+        { new: true }
+      )
+      .populate("favourite")
+      .exec(function (err, user) {
         if (err) res.send(err);
         res.json(user);
-      }
-    );
+      });
   } else {
-    user.findByIdAndUpdate(
-      req.params.user_id,
-      {
-        $pull: {
-          favourite: req.params.post_id,
+    user
+      .findByIdAndUpdate(
+        req.params.user_id,
+        {
+          $pull: {
+            favourite: req.params.post_id,
+          },
         },
-      },
-      { new: true },
-      (err, user) => {
+        { new: true }
+      )
+      .populate("favourite")
+      .exec(function (err, user) {
         if (err) res.send(err);
         res.json(user);
-      }
-    );
+      });
   }
 };
 
