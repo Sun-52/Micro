@@ -27,7 +27,7 @@ userRoutes(app);
 postRoutes(app);
 uploadRoutes(app);
 
-// app.listen(port);
+app.listen(port);
 
 // app.use((req, res) => {
 //   res.status(404).send({ url: `${req.originalUrl} not found` });
