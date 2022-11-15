@@ -9,6 +9,7 @@ global.comment = require("./api/models/commentModel");
 const userRoutes = require("./api/routes/userRoutes");
 const postRoutes = require("./api/routes/postRoutes");
 const uploadRoutes = require("./api/routes/uploadRoutes");
+const https = require('https')
 
 mongoose.connect(
   "mongodb+srv://Sun_Seree:Su214221@micro.zynfiw9.mongodb.net/Micro_main",
