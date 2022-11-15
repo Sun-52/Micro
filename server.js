@@ -31,22 +31,23 @@ uploadRoutes(app);
 
 //app.listen(port);
 
-// app.use((req, res) => {
-//   res.status(404).send({ url: `${req.originalUrl} not found` });
-// });
 
 https
-  .createServer(
-		// Provide the private and public key to the server by reading each
-		// file's content with the readFileSync() method.
-    {
-      key: fs.readFileSync("key.pem"),
-      cert: fs.readFileSync("cert.pem"),
-    },
-    app
+.createServer(
+  // Provide the private and public key to the server by reading each
+  // file's content with the readFileSync() method.
+  {
+    key: fs.readFileSync("key.pem"),
+    cert: fs.readFileSync("cert.pem"),
+  },
+  app
   )
   .listen(port, () => {
-    console.log("serever is runing at port 4000");
+    console.log("serever is runing");
   });
-
+  
 console.log(`Server started on port ${port}`);
+
+app.use((req, res) => {
+  res.status(404).send({ url: `${req.originalUrl} not found` });
+});
