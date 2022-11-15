@@ -16,7 +16,7 @@ mongoose.connect(
 );
 
 const port = process.env.PORT || 3200;
-// const app = express();
+const app = express();
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -27,7 +27,7 @@ userRoutes(app);
 postRoutes(app);
 uploadRoutes(app);
 
-app.listen(port);
+//app.listen(port);
 
 // app.use((req, res) => {
 //   res.status(404).send({ url: `${req.originalUrl} not found` });
