@@ -41,6 +41,7 @@ exports.view_post = async (req, res) => {
   post
     .findById(req.params.post_id)
     .populate("comments")
+    .populate("user")
     .exec(function (err, post) {
       if (err) res.send(err);
       res.json(post);
