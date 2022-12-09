@@ -40,8 +40,13 @@ exports.view_post = async (req, res) => {
   console.log(viewing_post);
   post
     .findById(req.params.post_id)
-    .populate("comments")
-    .populate("user")
+    .populate({
+      path: "comments",
+      populate: {
+        path: "user",
+        model: "user",
+      },
+    })
     .exec(function (err, post) {
       if (err) res.send(err);
       res.json(post);
