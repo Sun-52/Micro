@@ -30,30 +30,61 @@ const storage = getStorage(app);
 const storageRef = ref(storage, "some-child");
 
 module.exports = (app) => {
-  app.post("/upload", upload.single("file"), async (req, res) => {
-    const newUser = new user(req.body);
+  // app.post("/upload", upload.single("file"), async (req, res) => {
+  //   const newUser = new user(req.body);
+  //   var file = await req.file;
+  //   console.log(file);
+  //   var filename = file.originalname;
+  //   var imageRef = ref(storage, filename);
+  //   var metatype = { contentType: file.mimetype, name: file.originalname };
+  //   await uploadBytes(imageRef, file.buffer, metatype).then((snapshot) => {
+  //     console.log("image uploaded");
+  //   });
+  //   await getDownloadURL(ref(storage, filename)).then((url) => {
+  //     // user.findOneAndUpdate(
+  //     //   { _id: req.params.user_id },
+  //     //   { profile_image: url },
+  //     //   (err, user) => {
+  //     //     if (err) res.send(err);
+  //     //     res.json(user);
+  //     //   }
+  //     // );
+  //     newUser.profile_image = url;
+  //   });
+  //   newUser.save((err, user) => {
+  //     if (err) res.send(err);
+  //     res.json(user);
+  //   });
+  // });
+  app.post("/user/sign_up", upload.single("file"), async (req, res) => {
     var file = await req.file;
     console.log(file);
     var filename = file.originalname;
     var imageRef = ref(storage, filename);
     var metatype = { contentType: file.mimetype, name: file.originalname };
+    console.log("before upload");
     await uploadBytes(imageRef, file.buffer, metatype).then((snapshot) => {
       console.log("image uploaded");
     });
-    await getDownloadURL(ref(storage, filename)).then((url) => {
-      // user.findOneAndUpdate(
-      //   { _id: req.params.user_id },
-      //   { profile_image: url },
-      //   (err, user) => {
-      //     if (err) res.send(err);
-      //     res.json(user);
-      //   }
-      // );
-      newUser.profile_image = url;
-    });
-    newUser.save((err, user) => {
-      if (err) res.send(err);
-      res.json(user);
+    console.log("before get download url");
+    await getDownloadURL(ref(storage, filename)).then(async (url) => {
+      try {
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(req.body.password, salt);
+        console.log("salt:", salt, "password:", hashedPassword);
+        const newUser = new user({
+          name: req.body.name,
+          email: req.body.email,
+          password: hashedPassword,
+          profile_image: url,
+        });
+        newUser.save((err, user) => {
+          if (err) res.send(err);
+          res.json(user);
+        });
+      } catch {
+        res.status(500).send();
+      }
     });
   });
   app.post("/post", upload.single("file"), async (req, res) => {

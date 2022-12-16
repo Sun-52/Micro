@@ -9,15 +9,18 @@ const userSchema = new Schema({
   email: {
     type: String,
   },
-  profile: {
-    type: String,
-  },
+  // profile: {
+  //   type: String,
+  // },
   profile_image: {
     type: String,
   },
-  googleId: {
-    type: Schema.Types.ObjectId,
+  password: {
+    type: String,
   },
+  // googleId: {
+  //   type: Schema.Types.ObjectId,
+  // },
   posts: [
     {
       type: Schema.Types.ObjectId,

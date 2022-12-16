@@ -3,6 +3,9 @@ const Joi = require("joi");
 // const sharp = require("sharp");
 const mongoose = require("mongoose");
 const user = mongoose.model("user");
+const bcrypt = require("bcrypt");
+const { truncateSync } = require("fs");
+const userRoutes = require("../routes/userRoutes");
 //function/controller
 
 // exports.sign_in = async (req, res) => {
@@ -43,19 +46,41 @@ const user = mongoose.model("user");
 //   });
 // };
 
-exports.sign_up = (req, res) => {
-  const newUser = new user(req.body);
-  newUser.save((err, user) => {
-    if (err) res.send(err);
-    res.json(user);
-  });
-};
+// exports.sign_up = async (req, res) => {
+//   try {
+//     const salt = await bcrypt.genSalt(10);
+//     const hashedPassword = await bcrypt.hash(req.body.password, salt);
+//     console.log("salt:", salt, "password:", hashedPassword);
+//     const newUser = new user({
+//       name: req.body.name,
+//       email: req.body.email,
+//       password: hashedPassword,
+//       profile_image: req.body.profile_image,
+//     });
+//     newUser.save((err, user) => {
+//       if (err) res.send(err);
+//       res.json(user);
+//     });
+//   } catch {
+//     res.status(500).send();
+//   }
+// };
 
-exports.sign_in = (req, res) => {
-  user.findById(req.params.user_id, (err, user) => {
-    if (err) res.send(err);
-    res.json(user);
-  });
+exports.sign_in = async (req, res) => {
+  const current_user = await user.findOne({ email: req.body.email });
+  if (current_user == null) {
+    res.send("no user found");
+  } else {
+    try {
+      if (await bcrypt.compare(req.body.password, current_user.password)) {
+        res.json(current_user);
+      } else {
+        res.send("password incorrect");
+      }
+    } catch {
+      res.status(500).send();
+    }
+  }
 };
 // exports.add_profie_image = async (req, res) => {
 //   const buffer = Buffer.from(req.body.profile, "base64");
