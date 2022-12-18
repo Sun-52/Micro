@@ -46,26 +46,6 @@ const userRoutes = require("../routes/userRoutes");
 //   });
 // };
 
-// exports.sign_up = async (req, res) => {
-//   try {
-//     const salt = await bcrypt.genSalt(10);
-//     const hashedPassword = await bcrypt.hash(req.body.password, salt);
-//     console.log("salt:", salt, "password:", hashedPassword);
-//     const newUser = new user({
-//       name: req.body.name,
-//       email: req.body.email,
-//       password: hashedPassword,
-//       profile_image: req.body.profile_image,
-//     });
-//     newUser.save((err, user) => {
-//       if (err) res.send(err);
-//       res.json(user);
-//     });
-//   } catch {
-//     res.status(500).send();
-//   }
-// };
-
 exports.sign_in = async (req, res) => {
   const current_user = await user.findOne({ email: req.body.email });
   if (current_user == null) {
