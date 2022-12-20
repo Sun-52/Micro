@@ -57,8 +57,8 @@ exports.sign_in = async (req, res) => {
       } else {
         res.send("password incorrect");
       }
-    } catch {
-      res.status(500).send();
+    } catch (e) {
+      res.status(500).send(e);
     }
   }
 };

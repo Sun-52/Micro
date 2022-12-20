@@ -82,8 +82,8 @@ module.exports = (app) => {
           if (err) res.send(err);
           res.json(user);
         });
-      } catch {
-        res.status(500).send();
+      } catch (e) {
+        res.status(500).send(e);
       }
     });
   });
