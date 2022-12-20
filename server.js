@@ -29,21 +29,21 @@ userRoutes(app);
 postRoutes(app);
 uploadRoutes(app);
 
-//app.listen(port);
+app.listen(port);
 
-https
-  .createServer(
-    // Provide the private and public key to the server by reading each
-    // file's content with the readFileSync() method.
-    {
-      key: fs.readFileSync("key.pem"),
-      cert: fs.readFileSync("cert.pem"),
-    },
-    app
-  )
-  .listen(port, () => {
-    console.log("serever is runing");
-  });
+// https
+//   .createServer(
+//     // Provide the private and public key to the server by reading each
+//     // file's content with the readFileSync() method.
+//     {
+//       key: fs.readFileSync("key.pem"),
+//       cert: fs.readFileSync("cert.pem"),
+//     },
+//     app
+//   )
+//   .listen(port, () => {
+//     console.log("serever is runing");
+//   });
 
 console.log(`Server started on port ${port}`);
 
