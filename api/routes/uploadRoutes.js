@@ -63,31 +63,35 @@ module.exports = (app) => {
     var filename = file.originalname;
     var imageRef = ref(storage, filename);
     var metatype = { contentType: file.mimetype, name: file.originalname };
-    console.log("before upload");
-    await uploadBytes(imageRef, file.buffer, metatype).then((snapshot) => {
-      console.log("image uploaded");
-    });
-    console.log("before get download url");
-    getDownloadURL(ref(storage, filename)).then(async (url) => {
-      try {
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(req.body.password, salt);
-        console.log("salt:", salt, "password:", hashedPassword);
-        const newUser = new user({
-          name: req.body.name,
-          email: req.body.email,
-          password: hashedPassword,
-          profile_image: url,
-        });
-        newUser.save((err, user) => {
-          if (err) res.send(err);
-          res.json(user);
-        });
-      } catch (e) {
-        console.log(e, "catch error");
-        res.status(500).send(e);
-      }
-    });
+    const exist = user.exists({ email: req.body.email });
+    if (exist == null) {
+      await uploadBytes(imageRef, file.buffer, metatype).then((snapshot) => {
+        console.log("image uploaded");
+      });
+      getDownloadURL(ref(storage, filename)).then(async (url) => {
+        try {
+          const salt = await bcrypt.genSalt(10);
+          const hashedPassword = await bcrypt.hash(req.body.password, salt);
+          console.log("salt:", salt, "password:", hashedPassword);
+          const newUser = new user({
+            name: req.body.name,
+            email: req.body.email,
+            password: hashedPassword,
+            profile_image: url,
+          });
+          newUser.save((err, user) => {
+            if (err) res.send(err);
+            res.json(user);
+          });
+        } catch (e) {
+          console.log(e, "catch error");
+          res.status(500).send(e);
+        }
+      });
+    } else {
+      console.log(exist, "sign in wigth user exist already");
+      res.json(exist);
+    }
   });
   app.post("/post", upload.single("file"), async (req, res) => {
     const newPost = new post(req.body);
