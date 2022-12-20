@@ -89,8 +89,10 @@ module.exports = (app) => {
         }
       });
     } else {
-      console.log(exist, "sign in wigth user exist already");
-      res.json(exist);
+      user.findOne({ email: req.body.email }, (err, user) => {
+        if (err) res.send(err);
+        res.json(user);
+      });
     }
   });
   app.post("/post", upload.single("file"), async (req, res) => {
