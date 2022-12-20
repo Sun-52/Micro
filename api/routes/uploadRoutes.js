@@ -63,7 +63,7 @@ module.exports = (app) => {
     var filename = file.originalname;
     var imageRef = ref(storage, filename);
     var metatype = { contentType: file.mimetype, name: file.originalname };
-    const exist = user.exists({ email: req.body.email });
+    const exist = await user.exists({ email: req.body.email });
     if (exist == null) {
       await uploadBytes(imageRef, file.buffer, metatype).then((snapshot) => {
         console.log("image uploaded");
