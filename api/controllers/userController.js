@@ -58,6 +58,7 @@ exports.sign_in = async (req, res) => {
         res.send("password incorrect");
       }
     } catch (e) {
+      console.log(e, "catch error");
       res.status(500).send(e);
     }
   }

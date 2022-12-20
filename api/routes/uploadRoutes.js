@@ -67,7 +67,7 @@ module.exports = (app) => {
       console.log("image uploaded");
     });
     console.log("before get download url");
-    await getDownloadURL(ref(storage, filename)).then(async (url) => {
+    getDownloadURL(ref(storage, filename)).then(async (url) => {
       try {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(req.body.password, salt);
@@ -83,6 +83,7 @@ module.exports = (app) => {
           res.json(user);
         });
       } catch (e) {
+        console.log(e, "catch error");
         res.status(500).send(e);
       }
     });
