@@ -65,6 +65,7 @@ module.exports = (app) => {
     var metatype = { contentType: file.mimetype, name: file.originalname };
     const exist = await user.exists({ email: req.body.email });
     if (exist == null) {
+      console.log("user dont exist");
       await uploadBytes(imageRef, file.buffer, metatype).then((snapshot) => {
         console.log("image uploaded");
       });
@@ -89,6 +90,7 @@ module.exports = (app) => {
         }
       });
     } else {
+      console.log("user exist");
       user.findOne({ email: req.body.email }, (err, user) => {
         if (err) res.send(err);
         res.json(user);
