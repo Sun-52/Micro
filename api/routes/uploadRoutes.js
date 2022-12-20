@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const user = mongoose.model("user");
 const post = mongoose.model("post");
+const bcrypt = require("bcrypt");
 const date = require("date-and-time");
 //multer
 const multer = require("multer");
