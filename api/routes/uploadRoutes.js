@@ -86,7 +86,7 @@ module.exports = (app) => {
           });
         } catch (e) {
           console.log(e, "catch error");
-          res.status(500).send(e);
+          res.send(e);
         }
       });
     } else {

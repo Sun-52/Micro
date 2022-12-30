@@ -88,7 +88,7 @@ exports.sign_in = async (req, res) => {
 //   //   .promise();
 //};
 
-exports.get_profile = async (req, res) => {
+exports.get_profile = (req, res) => {
   user
     .findById(req.params.user_id)
     .populate("posts")
