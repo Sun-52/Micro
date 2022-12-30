@@ -49,13 +49,13 @@ const userRoutes = require("../routes/userRoutes");
 exports.sign_in = async (req, res) => {
   const current_user = await user.findOne({ email: req.body.email });
   if (current_user == null) {
-    res.send("no user found");
+    res.json({ type: "no user found" });
   } else {
     try {
       if (await bcrypt.compare(req.body.password, current_user.password)) {
         res.json(current_user);
       } else {
-        res.send("password incorrect");
+        res.json({ type: "password incorrect" });
       }
     } catch (e) {
       console.log(e, "catch error");
