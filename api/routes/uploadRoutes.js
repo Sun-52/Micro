@@ -81,7 +81,7 @@ module.exports = (app) => {
             profile_image: url,
           });
           newUser.save((err, user) => {
-            if (err) console.log(error);
+            if (err) console.log(err);
             res.json(user);
           });
         } catch (e) {
