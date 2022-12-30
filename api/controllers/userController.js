@@ -47,6 +47,7 @@ const userRoutes = require("../routes/userRoutes");
 // };
 
 exports.sign_in = async (req, res) => {
+  console.log(req.body.email);
   const current_user = await user.findOne({ email: req.body.email });
   console.log(current_user, "requesting sign in user");
   if (current_user == null) {
