@@ -7,5 +7,5 @@ module.exports = (app) => {
     .get(taskBuilder.get_profile) //finished
     .patch(taskBuilder.change_profile);
   app.route("/user/favourite/:user_id").get(taskBuilder.get_favourite);
-  app.route("/user/:user_id/:post_id").post(taskBuilder.add_favourite);
+  app.route("/user/:user_id/:post_id").patch(taskBuilder.add_favourite);
 };
