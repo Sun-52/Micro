@@ -80,20 +80,22 @@ exports.post_comment = (req, res) => {
 exports.like = async (req, res) => {
   const current_post = await post.findById(req.params.post_id);
   if (current_post.liked_user.includes(req.params.user_id) == true) {
-    post.findByIdAndUpdate(
-      req.params.post_id,
-      {
-        $pull: {
-          liked_user: req.params.user_id,
+    post
+      .findByIdAndUpdate(
+        req.params.post_id,
+        {
+          $pull: {
+            liked_user: req.params.user_id,
+          },
+          like: current_post.like - 1,
         },
-        like: current_post.like - 1,
-      },
-      { new: true },
-      (err, post) => {
+        { new: true }
+      )
+      .populate("user")
+      .exec(function (err, post) {
         if (err) res.send(err);
-        res.send(post);
-      }
-    );
+        res.json(post);
+      });
   } else if (current_post.liked_user.includes(req.params.user_id) == false) {
     post.findByIdAndUpdate(
       req.params.post_id,
