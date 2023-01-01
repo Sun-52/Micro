@@ -59,7 +59,7 @@ module.exports = (app) => {
   // });
   app.post("/user/sign_up", upload.single("file"), async (req, res) => {
     var file = await req.file;
-    console.log(file);
+    console.log(file, "tet requet file");
     var filename = file.originalname;
     var imageRef = ref(storage, filename);
     var metatype = { contentType: file.mimetype, name: file.originalname };
