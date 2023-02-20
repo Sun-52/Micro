@@ -99,11 +99,7 @@ module.exports = (app) => {
   });
   app.post("/post", upload.single("file"), async (req, res) => {
     const newPost = new post(req.body);
-    console.log(req.body.category);
-    const categoryList = req.body.category.split(", ");
-    console.log(categoryList, "category list");
-    newPost.category = categoryList;
-    newPost.category = [req.body.category];
+    newPost.category = req.body.category.split(",");
     newPost.date = date.format(new Date(), "YYYY/MM/DD");
     var file = await req.file;
     console.log(file);
