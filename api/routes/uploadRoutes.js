@@ -98,6 +98,7 @@ module.exports = (app) => {
     }
   });
   app.post("/post", upload.single("file"), async (req, res) => {
+    console.log(req.body.category);
     const newPost = new post(req.body);
     newPost.category = req.body.category;
     newPost.category = [req.body.category];
