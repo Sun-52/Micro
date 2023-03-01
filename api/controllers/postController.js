@@ -92,13 +92,6 @@ exports.get_all_post = (req, res) => {
   });
 };
 
-exports.get_post_by_category = (req, res) => {
-  post.find({ category: req.query.category }, (err, post) => {
-    if (err) res.send(err);
-    res.json(post);
-  });
-};
-
 exports.search = (req, res) => {
   post.find(
     {
