@@ -3,9 +3,7 @@ const user = mongoose.model("user");
 const bcrypt = require("bcrypt");
 
 exports.sign_in = async (req, res) => {
-  console.log(req.body);
   const current_user = await user.findOne({ email: req.body.email });
-  console.log(current_user, "requesting sign in user");
   if (current_user == null) {
     res.json({ type: "no user found" });
   } else {
@@ -15,9 +13,8 @@ exports.sign_in = async (req, res) => {
       } else {
         res.json({ type: "password incorrect" });
       }
-    } catch (e) {
-      console.log(e, "catch error");
-      res.status(500).send(e);
+    } catch (err) {
+      res.status(500).send(err);
     }
   }
 };
