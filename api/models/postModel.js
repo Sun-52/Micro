@@ -5,14 +5,12 @@ const { Schema } = mongoose;
 const postSchema = new Schema({
   title: {
     type: String,
-    required: "title cannot be blank",
   },
   image: {
     type: String,
   },
   content: {
     type: String,
-    required: "content cannot be blank",
   },
   category: [
     {
@@ -34,15 +32,6 @@ const postSchema = new Schema({
       ref: "user",
     },
   ],
-  // dislike: {
-  //   type: Number,
-  // },
-  // disliked_user: [
-  //   {
-  //     type: Schema.Types.ObjectId,
-  //     ref: "user",
-  //   },
-  // ],
   comments: [
     {
       type: Schema.Types.ObjectId,

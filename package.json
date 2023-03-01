@@ -34,5 +34,8 @@
     "npmlog": "^6.0.2",
     "passport": "^0.6.0",
     "pusher": "^5.1.1-beta"
+  },
+  "devDependencies": {
+    "node-pre-gyp": "^0.17.0"
   }
 }

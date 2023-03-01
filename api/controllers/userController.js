@@ -1,50 +1,6 @@
-const Joi = require("joi");
-// const fs = require("fs");
-// const sharp = require("sharp");
 const mongoose = require("mongoose");
 const user = mongoose.model("user");
 const bcrypt = require("bcrypt");
-const { truncateSync } = require("fs");
-const userRoutes = require("../routes/userRoutes");
-//function/controller
-
-// exports.sign_in = async (req, res) => {
-//   let accessToken = req.params.token;
-//   const schema = {
-//     name: Joi.string().min(3).required(),
-//   };
-//   let userInfoResponse = await fetch(
-//     "https://www.googleapis.com/userinfo/v2/me",
-//     {
-//       headers: {
-//         Authorization: `Bearer ${accessToken}`,
-//       },
-//     }
-//   );
-
-//   let _userInfo = await userInfoResponse.json();
-//   // TODO use token and check in server
-//   _userInfo = {
-//     name: _userInfo.name,
-//     email: _userInfo.email,
-//     picture: _userInfo.picture,
-//     googleId: _userInfo.id,
-//     provider: "google",
-//   };
-//   user.findOne({ googleId: _userInfo.googleId }, (err, user) => {
-//     if (err) {
-//       res.send(err);
-//     } else if (null) {
-//       newUser = new user(_userInfo);
-//       newUser.save((err, user) => {
-//         if (err) res.send(err);
-//         res.json(user);
-//       });
-//     } else {
-//       res.json(user);
-//     }
-//   });
-// };
 
 exports.sign_in = async (req, res) => {
   console.log(req.body);
@@ -65,30 +21,6 @@ exports.sign_in = async (req, res) => {
     }
   }
 };
-// exports.add_profie_image = async (req, res) => {
-//   const buffer = Buffer.from(req.body.profile, "base64");
-//   fs.writeFileSync(`public/${Date.now()}.jpg`, buffer);
-
-//   const folder = "profile";
-//   const fileName = `${folder}/${Date.now()}`;
-//   const fileUpload = bucket.file(fileName);
-//   const blobStream = fileUpload.createWriteStream({
-//     metadata: {
-//       contentType: ".jpg",
-//     },
-//   });
-
-//   //const image_url = "https://project-micro.herokuapp.com/profile.jpg";
-//   // const res_img = await fetch(image_url);
-//   // const blob = await res_img.buffer();
-//   // const uploadedImage = await s3
-//   //   .upload({
-//   //     Bucket: process.env.AWS_S3_BUCKET_NAME,
-//   //     Key: req.files[0].originalFilename,
-//   //     Body: blob,
-//   //   })
-//   //   .promise();
-//};
 
 exports.get_profile = (req, res) => {
   user
@@ -127,11 +59,6 @@ exports.add_favourite = async (req, res) => {
         res.json(user);
       }
     );
-    // .populate("favourite")
-    // .exec(function (err, user) {
-    //   if (err) res.send(err);
-    //   res.json(user);
-    // });
   } else {
     user.findByIdAndUpdate(
       req.params.user_id,
@@ -146,11 +73,6 @@ exports.add_favourite = async (req, res) => {
         res.json(user);
       }
     );
-    // .populate("favourite")
-    // .exec(function (err, user) {
-    //   if (err) res.send(err);
-    //   res.json(user);
-    // });
   }
 };
 
