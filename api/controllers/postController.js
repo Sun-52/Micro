@@ -120,10 +120,10 @@ exports.deletePost = (req, res) => {
       (err, comment) => {
         if (err) res.send(err);
         user.findOneAndUpdate(
-          { posts: post._id },
-          { $pull: { posts: post._id } },
+          { $or: [{ posts: post._id }, { favourite: post._id }] },
+          { $pull: { posts: post._id, favourite: post._id } },
           (err, user) => {
-            if (err) res.send(err);
+            if (err) console.log(err);
           }
         );
       }
