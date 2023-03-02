@@ -123,7 +123,7 @@ exports.deletePost = (req, res) => {
           { $or: [{ posts: post._id }, { favourite: post._id }] },
           { $pull: { posts: post._id, favourite: post._id } },
           (err, user) => {
-            if (err) console.log(err);
+            if (err) res.send(err);
           }
         );
       }
