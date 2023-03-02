@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const date = require("date-and-time");
 const post = mongoose.model("post");
 const comment = mongoose.model("comment");
+const user = mongoose.model("user");
 
 exports.viewPost = async (req, res) => {
   const viewing_post = await post.findById(req.params.post_id);
@@ -105,4 +106,28 @@ exports.search = (req, res) => {
       res.json(post);
     }
   );
+};
+
+exports.deletePost = (req, res) => {
+  post.findByIdAndDelete(req.params.post_id, (err, post) => {
+    if (err) res.send(err);
+    comment.deleteMany(
+      {
+        _id: {
+          $in: post.comments,
+        },
+      },
+      (err, comment) => {
+        if (err) res.send(err);
+        user.findOneAndUpdate(
+          { posts: post._id },
+          { $pull: { posts: post._id } },
+          (err, user) => {
+            if (err) res.send(err);
+          }
+        );
+      }
+    );
+    res.json(post);
+  });
 };
