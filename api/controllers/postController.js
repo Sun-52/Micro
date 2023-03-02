@@ -3,7 +3,7 @@ const date = require("date-and-time");
 const post = mongoose.model("post");
 const comment = mongoose.model("comment");
 
-exports.view_post = async (req, res) => {
+exports.viewPost = async (req, res) => {
   const viewing_post = await post.findById(req.params.post_id);
   const view = viewing_post.view;
 
@@ -25,7 +25,7 @@ exports.view_post = async (req, res) => {
     });
 };
 
-exports.post_comment = (req, res) => {
+exports.postComment = (req, res) => {
   const newComment = new comment(req.body);
   newComment.date = date.format(new Date(), "YYYY/MM/DD");
   newComment.save((err, comment) => {
@@ -85,7 +85,7 @@ exports.like = async (req, res) => {
   }
 };
 
-exports.get_all_post = (req, res) => {
+exports.getallPost = (req, res) => {
   post.find({}, (err, post) => {
     if (err) res.send(err);
     res.json(post);
