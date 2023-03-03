@@ -71,3 +71,14 @@ exports.getFavourite = (req, res) => {
       res.json(user);
     });
 };
+
+exports.changeName = (req, res) => {
+  user.findByIdAndUpdate(
+    req.params.user_id,
+    { name: req.body.name },
+    (err, user) => {
+      if (err) res.send(err);
+      res.json(user);
+    }
+  );
+};

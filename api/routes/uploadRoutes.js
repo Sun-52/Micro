@@ -94,4 +94,24 @@ module.exports = (app) => {
       res.json(post);
     });
   });
+  app.patch(
+    "/user/change/profile/:user_id",
+    upload.single("file"),
+    async (req, res) => {
+      const file = await req.file;
+      const imageRef = ref(storage, file.originalname);
+      const metatype = { contentType: file.mimetype, name: file.originalname };
+      await uploadBytes(imageRef, file.buffer, metatype).then((snapshot) => {});
+      await getDownloadURL(imageRef).then((url) => {
+        user.findByIdAndUpdate(
+          req.params.user_id,
+          { profile_image: url },
+          (err, user) => {
+            if (err) res.send(err);
+            res.json(user);
+          }
+        );
+      });
+    }
+  );
 };
