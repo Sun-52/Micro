@@ -5,25 +5,31 @@ const comment = mongoose.model("comment");
 const user = mongoose.model("user");
 
 exports.viewPost = async (req, res) => {
-  const viewing_post = await post.findById(req.params.post_id);
-  const view = viewing_post.view;
+  const exist = post.exists({ _id: req.params.post_id });
+  if (exist === true) {
+    const viewing_post = await post.findById(req.params.post_id);
+    console.log(viewing_post);
+    const view = viewing_post.view;
 
-  viewing_post.view = view + 1;
-  await viewing_post.save();
-  post
-    .findById(req.params.post_id)
-    .populate({
-      path: "comments",
-      populate: {
-        path: "user",
-        model: "user",
-      },
-    })
-    .populate("user")
-    .exec(function (err, post) {
-      if (err) res.send(err);
-      res.json(post);
-    });
+    viewing_post.view = view + 1;
+    await viewing_post.save();
+    post
+      .findById(req.params.post_id)
+      .populate({
+        path: "comments",
+        populate: {
+          path: "user",
+          model: "user",
+        },
+      })
+      .populate("user")
+      .exec(function (err, post) {
+        if (err) res.send(err);
+        res.json(post);
+      });
+  } else {
+    res.json({ exist: false });
+  }
 };
 
 exports.postComment = (req, res) => {
