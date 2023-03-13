@@ -5,8 +5,9 @@ const comment = mongoose.model("comment");
 const user = mongoose.model("user");
 
 exports.viewPost = async (req, res) => {
-  const exist = post.exists({ _id: req.params.post_id });
-  if (exist === true) {
+  const exist = await post.exists({ _id: req.params.post_id });
+  console.log(exist, "exist");
+  if (exist !== null) {
     const viewing_post = await post.findById(req.params.post_id);
     console.log(viewing_post);
     const view = viewing_post.view;
