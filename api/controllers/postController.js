@@ -138,3 +138,16 @@ exports.deletePost = (req, res) => {
     res.json(post);
   });
 };
+
+exports.getCategory = (req, res) => {
+  const categoryList = [
+    "anime",
+    "financial",
+    "technology",
+    "education",
+    "food",
+    "gaming",
+    "money",
+  ];
+  res.json({ category: categoryList });
+};
