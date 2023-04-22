@@ -148,8 +148,9 @@ exports.getCategory = (req, res) => {
     "food",
     "sport",
     "lifestyle",
-    "food",
     "gaming",
+    "management",
+    "education",
   ];
   res.json({ category: categoryList });
 };
