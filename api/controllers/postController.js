@@ -141,17 +141,17 @@ exports.deletePost = (req, res) => {
 
 exports.getCategory = (req, res) => {
   const categoryList = [
-    "business",
-    "technology",
-    "traveling",
-    "health",
-    "food",
-    "sport",
-    "lifestyle",
-    "gaming",
-    "management",
-    "education",
-    "self development",
+    "Business",
+    "Technology",
+    "Traveling",
+    "Health",
+    "Food",
+    "Sport",
+    "Lifestyle",
+    "Gaming",
+    "Management",
+    "Education",
+    "Self development",
   ];
   res.json({ category: categoryList });
 };
