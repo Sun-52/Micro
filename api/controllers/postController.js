@@ -152,6 +152,7 @@ exports.getCategory = (req, res) => {
     "Management",
     "Education",
     "Self development",
+    "Skill development",
   ];
   res.json({ category: categoryList });
 };
