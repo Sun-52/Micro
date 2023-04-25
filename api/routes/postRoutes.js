@@ -9,5 +9,6 @@ module.exports = (app) => {
     .get(taskBuilder.viewPost)
     .post(taskBuilder.postComment)
     .delete(taskBuilder.deletePost);
+  app.route("/post/comment/:post_id").get(taskBuilder.getComment);
   app.route("/post/:post_id/:user_id").patch(taskBuilder.like);
 };

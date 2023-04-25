@@ -139,6 +139,23 @@ exports.deletePost = (req, res) => {
   });
 };
 
+exports.getComment = (req, res) => {
+  post
+    .findById(req.params.post_id)
+    .populate({
+      path: "comments",
+      populate: {
+        path: "user",
+        model: "user",
+      },
+    })
+    .populate("user")
+    .exec(function (err, post) {
+      if (err) res.send(err);
+      console.log(post.comments);
+      res.json(post.comments);
+    });
+};
 exports.getCategory = (req, res) => {
   const categoryList = [
     "Business",
