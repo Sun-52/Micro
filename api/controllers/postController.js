@@ -14,20 +14,7 @@ exports.viewPost = async (req, res) => {
 
     viewing_post.view = view + 1;
     await viewing_post.save();
-    post
-      .findById(req.params.post_id)
-      .populate({
-        path: "comments",
-        populate: {
-          path: "user",
-          model: "user",
-        },
-      })
-      .populate("user")
-      .exec(function (err, post) {
-        if (err) res.send(err);
-        res.json(post);
-      });
+    res.json(viewing_post);
   } else {
     res.json({ exist: false });
   }
